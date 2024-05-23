@@ -3,4 +3,29 @@
 <p>
     Data Dari API (Test):
     
+    <a href="/api/auth/logout"><button>Logout</button></a>
+
+    <h2>Add New Contact</h2>
+    <form action="/api/contact" method="POST">
+        <div class="input-group">
+            <label for="firstName">Nama Depan</label>
+            <input type="text" id="firstName" name="kontak[firstName]" placeholder="Nama Depan" required>
+        </div>
+        <div class="input-group">
+            <label for="lastName">Nama Belakang (Opsional)</label>
+            <input type="text" id="lastName" name="kontak[lastName]" placeholder="Nama Belakang">
+        </div>
+        <div class="input-group">
+            <label for="phoneNumber">No Telepon</label>
+            <input type="number" id="phoneNumber" name="kontak[phoneNumber]" placeholder="Nomor Telepon">
+        </div>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="kontak[email]" placeholder="Email">
+        </div>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <h2>Kontak Saya</h2>
+    
 </p></div>

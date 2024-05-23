@@ -6,9 +6,18 @@ const MongoStore = require('connect-mongo');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const flash = require('connect-flash');
+const bodyParser = require('body-parser');
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 const webRoutes  = require('./routes/webRoutes');
 const apiRoutes = require('./routes/apiRoutes');
+const authRoutes = require('./routes/authRoutes');
+
+const User = require('./models/user');
+const ExpressError = require('./utils/ExpressError');
 
 const dbUrl = process.env.DB_URL || `mongodb://127.0.0.1:27017/contactApp`;
 
@@ -29,6 +38,7 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 //Konfigurasi session
 const secret = process.env.SECRET || 'secretSessionKey';
@@ -58,20 +68,34 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
+app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) =>{
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 // Routes
 app.use('/', webRoutes);
 app.use('/api', apiRoutes);
+app.use('/api/auth', authRoutes);
 
 app.all('*', (req, res, next) => {
-    res.send('404 Not Found')
-    //next(new ExpressError('404 Page Not Found', 404))
+    next(new ExpressError('404 Page Not Found', 404))
 })
-
 
 //Start Server
 const port = process.env.PORT || 3000;
+
 app.listen(port, ()=>{
     console.log('listening on http://localhost:3000');
 })

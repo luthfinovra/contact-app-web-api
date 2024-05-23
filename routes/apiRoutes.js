@@ -1,19 +1,9 @@
 const express = require('express');
+const catchAsync = require('../utils/catchAsync');
 const router = express.Router();
+const contactController = require('../controllers/contactController')
 
-// Get all posts
-// router.get('/posts', postController.apiGetAllPosts);
-
-// Get single post by ID
-// router.get('/posts/:id', postController.apiGetPostById);
-
-// Create a new post
-// router.post('/posts', postController.apiCreatePost);
-
-// Update a post by ID
-// router.put('/posts/:id', postController.apiUpdatePost);
-
-// Delete a post by ID
-// router.delete('/posts/:id', postController.apiDeletePost);
+router.route('/contact')
+    .post(catchAsync(contactController.createNewContact))
 
 module.exports = router;

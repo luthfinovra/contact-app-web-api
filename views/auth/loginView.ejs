@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <%- include('../partials/flash') %>
+    Login to Your Account!
+    <form action="/api/auth/login" method="POST">
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <br>
+    <a href="/register"><button>Register</button></a>
+</body>
+</html>
