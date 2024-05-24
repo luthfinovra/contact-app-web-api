@@ -27,5 +27,14 @@
     </form>
 
     <h2>Kontak Saya</h2>
+
+    <div class="container-fluid">
+        <% const count = 1 %>
+        <% for (let kontak of contacts) { %>
+            <h4><%= count %>. <%= kontak.firstName %> <%= kontak.lastName %></h4>
+            <ul>No Telepon: <%= kontak.phoneNumber %></ul>
+            <ul>Email: <%= kontak.email %></ul>
+        <% } %>
+    </div>
     
 </p></div>

@@ -1,14 +1,16 @@
 const User = require('../models/user');
 const Contact = require('../models/contact');
+const contactServices = require('../utils/services')
 
 module.exports.createNewContact = async (req, res) => {
     const contact = new Contact(req.body.kontak);
     console.log(req.body);
     await contact.save();
 
+    console.log(req.user)
     const user = await User.findById(req.user._id);
     user.contact.push(contact);
-    await user.save;
+    await user.save();
 
     if (req.accepts('html')) {
         req.flash('success', 'Welcome back!');
@@ -18,4 +20,10 @@ module.exports.createNewContact = async (req, res) => {
     } else if (req.accepts('json')) {
         res.json({ message: 'Kontak Berhasil Disimpan',  Kontak: contact.toJSON});
     }
+}
+
+module.exports.getAllContact = async (req, res) => {
+    const contacts = await contactServices.getContacts(req.user._id);
+    
+    res.json({ message: 'Daftar Kontak',  contacts: contacts});
 }
