@@ -7,4 +7,8 @@ router.route('/contact')
     .post(catchAsync(contactController.createNewContact))
     .get(catchAsync(contactController.getAllContact))
 
+router.route('/contact/:id')
+    .delete(catchAsync(contactController.deleteContactById))
+    .put(catchAsync(contactController.editKontak))
+
 module.exports = router;

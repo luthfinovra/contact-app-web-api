@@ -27,3 +27,55 @@ module.exports.getAllContact = async (req, res) => {
     
     res.json({ message: 'Daftar Kontak',  contacts: contacts});
 }
+
+module.exports.deleteContactById = async (req, res) => {
+    const kontakId = req.params.id;
+    const userId = req.user.id;
+    await User.findByIdAndUpdate(userId, {$pull: {contact: kontakId}});
+    await Contact.findByIdAndDelete(kontakId);
+
+    if(req.accepts('html')){
+        req.flash('success', 'Berhasil Menghapus Katalog')
+        res.redirect('/');
+    }else if(req.accepts('json')){
+        res.json({message: 'Kontak berhasil dihapus'})
+    }
+}
+
+module.exports.renderEditContactForm = async (req, res) => {
+    const kontakId = req.params.id;
+    const kontak = await Contact.findById(kontakId);
+
+    res.render('editKontakView', {kontak});
+}
+
+module.exports.editKontak = async (req, res) => {
+    const kontakId = req.params.id;
+    const kontak = req.body.kontak;
+
+    try {
+        existingContact = await Contact.findById(kontakId);
+        
+        if(!existingContact){
+            return res.status(404).send('Kontak not found');
+        }
+
+        existingContact.firstName = kontak.firstName;
+        existingContact.lastName = kontak.lastName;
+        existingContact.phoneNumber = kontak.phoneNumber;
+        existingContact.email = kontak.email;
+
+        await existingContact.save();
+
+        if(req.accepts('html')){
+            req.flash('success', 'Berhasil Mengubah Kontak');
+            res.redirect('/')
+        }else if(req.accepts('json')){
+            res.json({message: 'Kontak Berhasil diubah'});
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+    }
+
+}

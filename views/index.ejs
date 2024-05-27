@@ -29,11 +29,13 @@
     <h2>Kontak Saya</h2>
 
     <div class="container-fluid">
-        <% const count = 1 %>
         <% for (let kontak of contacts) { %>
-            <h4><%= count %>. <%= kontak.firstName %> <%= kontak.lastName %></h4>
+            <h4><%= kontak.firstName %> <%= kontak.lastName %></h4>
             <ul>No Telepon: <%= kontak.phoneNumber %></ul>
             <ul>Email: <%= kontak.email %></ul>
+            <form action="/api/contact/<%= kontak._id %>?_method=DELETE" method="POST">
+            <button>Hapus</button></form>
+            <a href="/kontak/<%= kontak._id %>"><button>Ubah</button></a>
         <% } %>
     </div>
     
