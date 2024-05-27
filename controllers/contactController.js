@@ -13,7 +13,7 @@ module.exports.createNewContact = async (req, res) => {
     await user.save();
 
     if (req.accepts('html')) {
-        req.flash('success', 'Welcome back!');
+        req.flash('success', 'Kontak Berhasil Ditambahkan');
         const redirectUrl = req.session.returnTo || '/';
         delete req.session.returnTo;
         res.redirect(redirectUrl);

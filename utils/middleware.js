@@ -2,12 +2,27 @@ const ExpressError = require('../utils/ExpressError');
 const jwt = require('jsonwebtoken');
 
 const isLoggedIn = (req, res, next) => {
-    if(!req.isAuthenticated()){ 
-        req.session.returnTo = req.originalUrl; 
-        req.flash('error', 'Please login');
-        return res.redirect('/login');
+  //authenticate using session
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  
+  //authenticate JWT
+  if (req.headers['authorization'] && req.headers['authorization'].startsWith('Bearer ')) {
+    console.log(token);
+    const token = req.headers['authorization'].split(' ')[1];
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        return next();
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid token' });
     }
-    next();
+  }
+
+  req.session.returnTo = req.originalUrl;
+  req.flash('error', 'Please login');
+  return res.redirect('/login');
 }
 
 const storeReturnTo = (req, res, next) => {
@@ -17,46 +32,7 @@ const storeReturnTo = (req, res, next) => {
     next();
 }
 
-const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) {
-      return res.status(401).json({ message: 'Access Denied' });
-    }
-  
-    try {
-      const decoded = jwt.verify(token, 'your_jwt_secret');
-      req.user = decoded;
-      next();
-    } catch (error) {
-      res.status(400).json({ message: 'Invalid Token' });
-    }
-  };
-
-const handleAuthFailure = (req, res, next) => {
-    return (err, user, info) => {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        if (req.accepts('html')) {
-          req.flash('error', info.message);
-          return res.redirect('/login');
-        } else if (req.accepts('json')) {
-          return res.status(401).json({ message: info.message });
-        }
-      }
-      req.logIn(user, (err) => {
-        if (err) {
-          return next(err);
-        }
-        next();
-      });
-    };
-};
-
 module.exports = {
     isLoggedIn,
     storeReturnTo,
-    handleAuthFailure,
-    authenticateJWT,
 }

@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const contactController = require('../controllers/contactController');
 const contactService = require('../utils/services');
+const {isLoggedIn} = require('../utils/middleware')
 
 router.route('/login')
   .get(authController.renderLoginForm)
@@ -10,13 +11,13 @@ router.route('/login')
 router.route('/register')
   .get(authController.renderRegisterForm)
 
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   const contacts = await contactService.getContacts(req.user._id);
   //console.log(contacts)
   res.render('index', {contacts});
 });
 
 router.route('/kontak/:id')
-  .get(contactController.renderEditContactForm);
+  .get(isLoggedIn, contactController.renderEditContactForm);
 
 module.exports = router;
