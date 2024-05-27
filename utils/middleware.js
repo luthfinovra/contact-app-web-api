@@ -32,7 +32,31 @@ const storeReturnTo = (req, res, next) => {
     next();
 }
 
+const handleAuthFailure = (req, res, next) => {
+  return (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      if (req.accepts('html')) {
+        req.flash('error', info.message);
+        return res.redirect('/login');
+      } else if (req.accepts('json')) {
+        return res.status(401).json({ message: info.message });
+      }
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      next();
+    });
+  };
+};
+
+
 module.exports = {
     isLoggedIn,
     storeReturnTo,
+    handleAuthFailure
 }

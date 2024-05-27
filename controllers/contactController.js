@@ -35,7 +35,7 @@ module.exports.deleteContactById = async (req, res) => {
     await Contact.findByIdAndDelete(kontakId);
 
     if(req.accepts('html')){
-        req.flash('success', 'Berhasil Menghapus Katalog')
+        req.flash('success', 'Berhasil Menghapus Kontak')
         res.redirect('/');
     }else if(req.accepts('json')){
         res.json({message: 'Kontak berhasil dihapus'})
