@@ -9,8 +9,8 @@ const isLoggedIn = (req, res, next) => {
   
   //authenticate JWT
   if (req.headers['authorization'] && req.headers['authorization'].startsWith('Bearer ')) {
-    console.log(token);
     const token = req.headers['authorization'].split(' ')[1];
+    //console.log(token);
     try {
         const decoded = jwt.verify(token, 'your_jwt_secret' || process.env.JWT_SECRET);
         req.user = decoded;
@@ -22,7 +22,11 @@ const isLoggedIn = (req, res, next) => {
 
   req.session.returnTo = req.originalUrl;
   req.flash('error', 'Please login');
-  return res.redirect('/login');
+  if(req.accepts('html')){
+    return res.redirect('/login');
+  }
+
+  return res.status(401).json({message: 'Please Login!'})
 }
 
 const storeReturnTo = (req, res, next) => {

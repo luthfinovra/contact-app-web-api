@@ -12,7 +12,7 @@ router.route('/register')
   .get(authController.renderRegisterForm)
 
 router.get('/', isLoggedIn, async (req, res) => {
-  const contacts = await contactService.getContacts(req.user._id);
+  const contacts = await contactService.getContacts(req.user.id);
   //console.log(contacts)
   res.render('index', {contacts});
 });

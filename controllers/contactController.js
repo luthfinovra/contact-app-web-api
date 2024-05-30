@@ -8,7 +8,7 @@ module.exports.createNewContact = async (req, res) => {
     await contact.save();
 
     console.log(req.user)
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user.id);
     user.contact.push(contact);
     await user.save();
 
@@ -23,9 +23,10 @@ module.exports.createNewContact = async (req, res) => {
 }
 
 module.exports.getAllContact = async (req, res) => {
-    const contacts = await contactServices.getContacts(req.user._id);
+    console.log(req.user);
+    const contacts = await contactServices.getContacts(req.user.id);
     
-    res.json({ message: 'Daftar Kontak',  contacts: contacts});
+    res.json({ message: 'Berhasil Fetch Kontak',  contacts: contacts});
 }
 
 module.exports.deleteContactById = async (req, res) => {
