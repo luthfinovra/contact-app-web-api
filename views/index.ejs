@@ -1,4 +1,5 @@
 <% layout("layout/boilerplate") %>
+    
     <div id="card" class="container-fluid">
         <form class="mx-auto" action="/api/contact" method="POST">
             <h2 class="text-center">Add New Contact</h2>
@@ -22,11 +23,41 @@
         </form>
     </div>
 
-
     <div id="card" class="container-fluid">
-        <h2>Kontak Saya</h2>
-
-        <div class="container-fluid">
+        <h2 class="text-center mb-3">My Contact</h2>
+        
+        <% for (let kontak of contacts) { %>
+            <div id="contact" class="card mb-3">
+                <div class="row g-0">
+                <div class="col-md-1 text-center">
+                    <img src="./profile1.png" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                    <h4 class="card-title"><%= kontak.firstName %> <%= kontak.lastName %></h4>
+                    <p class="card-text mb-1">No Telepon: <%= kontak.phoneNumber %></p>
+                    <p class="card-text">Email: <%= kontak.email %></p>
+                    </div>
+                </div>
+                <div class="col-md-2 text-center ">
+                    <div class="button-container">
+                        <a href="/kontak/<%= kontak._id %>">
+                            <button id="ubah">
+                                <img id="update" src="./update.png" class="img-fluid rounded-start" alt="...">
+                            </button>
+                        </a>
+                        <form id="hapus" action="/api/contact/<%= kontak._id %>?_method=DELETE" method="POST">
+                            <button id="hapus" type="submit" class="btn p-0 border-0 bg-transparent">
+                                <img id="trash" src="./trash.png" class="img-fluid rounded-start" alt="...">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <!-- <div class="container-fluid">
             <% for (let kontak of contacts) { %>
                 <h4><%= kontak.firstName %> <%= kontak.lastName %></h4>
                 <ul>No Telepon: <%= kontak.phoneNumber %></ul>
@@ -38,7 +69,5 @@
                     <button>Ubah</button>
                 </a>
             <% } %>
-        </div>
-    </div>   
-    
-</p></div>
+        </div> -->
+    </div>
