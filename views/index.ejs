@@ -1,17 +1,27 @@
 <% layout("layout/boilerplate") %>
-<div><h1>Home Page</h1>
-<p>
-    Data Dari API (Test):
     
-    <a href="/api/auth/logout"><button>Logout</button></a>
-
-<<<<<<< Updated upstream
-    <h2>Add New Contact</h2>
-    <form action="/api/contact" method="POST">
-        <div class="input-group">
-            <label for="firstName">Nama Depan</label>
-            <input type="text" id="firstName" name="kontak[firstName]" placeholder="Nama Depan" required>
-=======
+    <div id="card" class="container-fluid">
+        <form class="mx-auto" action="/api/contact" method="POST">
+            <h2 class="text-center">Add New Contact</h2>
+            <div class="mb-2 mt-3">
+                <label for="firstName" class="form-label">Nama Depan</label>
+                <input class="form-control" type="text" id="firstName" name="kontak[firstName]" placeholder="Nama Depan" required>
+            </div>
+            <div class="mb-2 mt-3">
+                <label for="lastName" class="form-label">Nama Belakang (Opsional)</label>
+                <input class="form-control" type="text" id="lastName" name="kontak[lastName]" placeholder="Nama Belakang">
+            </div>
+            <div class="mb-2 mt-3">
+                <label for="phoneNumber" class="form-label">No Telepon</label>
+                <input class="form-control" type="number" id="phoneNumber" name="kontak[phoneNumber]" placeholder="Nomor Telepon">
+            </div>
+            <div class="mb-2 mt-3">
+                <label for="email" class="form-label">Email</label>
+                <input class="form-control" type="email" id="email" name="kontak[email]" placeholder="Email">
+            </div>
+            <button type="submit" class="btn btn-primary mt-5">Simpan</button>
+        </form>
+    </div>
 
     <div id="card" class="container-fluid">
         <h2 class="text-center mb-3">My Contact</h2>
@@ -59,34 +69,5 @@
                     <button>Ubah</button>
                 </a>
             <% } %>
->>>>>>> Stashed changes
         </div>
-        <div class="input-group">
-            <label for="lastName">Nama Belakang (Opsional)</label>
-            <input type="text" id="lastName" name="kontak[lastName]" placeholder="Nama Belakang">
-        </div>
-        <div class="input-group">
-            <label for="phoneNumber">No Telepon</label>
-            <input type="number" id="phoneNumber" name="kontak[phoneNumber]" placeholder="Nomor Telepon">
-        </div>
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="kontak[email]" placeholder="Email">
-        </div>
-        <button type="submit">Simpan</button>
-    </form>
-
-    <h2>Kontak Saya</h2>
-
-    <div class="container-fluid">
-        <% for (let kontak of contacts) { %>
-            <h4><%= kontak.firstName %> <%= kontak.lastName %></h4>
-            <ul>No Telepon: <%= kontak.phoneNumber %></ul>
-            <ul>Email: <%= kontak.email %></ul>
-            <form action="/api/contact/<%= kontak._id %>?_method=DELETE" method="POST">
-            <button>Hapus</button></form>
-            <a href="/kontak/<%= kontak._id %>"><button>Ubah</button></a>
-        <% } %>
     </div>
-    
-</p></div>
