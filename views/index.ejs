@@ -41,16 +41,16 @@
                 </div>
                 <div class="col-md-2 text-center ">
                     <div class="button-container">
-                    <a href="/kontak/<%= kontak._id %>">
-                        <button id="ubah">
-                            <img src="./update.png" class="img-fluid rounded-start" alt="...">
-                        </button>
-                    </a>
-                    <form id="hapus" action="/api/contact/<%= kontak._id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="btn p-0 border-0 bg-transparent">
-                            <img src="./trash1.png" class="img-fluid rounded-start" alt="...">
-                        </button>
-                    </form>
+                        <a href="/kontak/<%= kontak._id %>">
+                            <button id="ubah">
+                                <img id="update" src="./update.png" class="img-fluid rounded-start" alt="...">
+                            </button>
+                        </a>
+                        <form id="hapus" action="/api/contact/<%= kontak._id %>?_method=DELETE" method="POST">
+                            <button id="hapus" type="submit" class="btn p-0 border-0 bg-transparent">
+                                <img id="trash" src="./trash.png" class="img-fluid rounded-start" alt="...">
+                            </button>
+                        </form>
                     </div>
                 </div>
                 </div>

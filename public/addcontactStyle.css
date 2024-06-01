@@ -28,6 +28,10 @@ body{
     background: #030303;
 }
 
+.btn-primary:hover{
+   background-color: #8e8e8e;
+}
+
 .form-control{
     color: rgba(0,0,0,.87);
     }
@@ -49,6 +53,14 @@ body{
 
  img{
     margin-top: 27px;
+ }
+
+ #update:hover{
+   content: url('./update-hover.png');
+ }
+
+ #trash:hover{
+   content: url('./trash-hover.png');
  }
 
  #contact{

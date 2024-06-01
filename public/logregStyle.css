@@ -26,6 +26,10 @@ form{
     background: #030303;
 }
 
+.btn-primary:hover{
+    background-color: #8e8e8e;
+ }
+
 .form-control{
     color: rgba(0,0,0,.87);
     border-bottom-color: rgba(0,0,0,.42);
@@ -33,7 +37,7 @@ form{
     border: none;
     border-bottom: 1px solid;
     border-radius: 4px 4px 0 0;
-    }
+}
     
  h4{
     font-size: 2rem !important;

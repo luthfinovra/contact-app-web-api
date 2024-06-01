@@ -28,6 +28,10 @@ body{
     background: #030303;
 }
 
+.btn-primary:hover{
+    background-color: #8e8e8e;
+ }
+
 .form-control{
     color: rgba(0,0,0,.87);
     }
@@ -46,32 +50,3 @@ body{
     font-weight: 800 !important;
     font-size: 18px;
  }
-
- img{
-    margin-top: 27px;
- }
-
- #contact{
-    border-width: 3px;
-    border-color: black;
-    background-color: #e1dfdf;
- }
-
- p{
-    font-size: 20px;
- }
-
- #ubah{
-    background-color: #e1dfdf;
-    border: none;
- }
-
- .button-container {
-    display: flex;
-    justify-content: space-around; 
-    align-items: center;
-}
-.button-container a,
-.button-container form {
-    margin: 0 5px; 
-}
