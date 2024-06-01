@@ -68,11 +68,10 @@ body{
 
  .button-container {
     display: flex;
-    justify-content: space-around; /* or use space-between, space-evenly, etc. based on your needs */
+    justify-content: space-around; 
     align-items: center;
 }
-
 .button-container a,
 .button-container form {
-    margin: 0 5px; /* Optional: Add some margin between the buttons */
+    margin: 0 5px; 
 }
