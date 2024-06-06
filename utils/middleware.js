@@ -16,7 +16,7 @@ const isLoggedIn = (req, res, next) => {
         req.user = decoded;
         return next();
     } catch (error) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return res.status(401).json({error: true, message: 'Invalid token' });
     }
   }
 
@@ -26,7 +26,7 @@ const isLoggedIn = (req, res, next) => {
     return res.redirect('/login');
   }
 
-  return res.status(401).json({message: 'Please Login!'})
+  return res.status(401).json({error:true, message: 'Please Login!'})
 }
 
 const storeReturnTo = (req, res, next) => {
@@ -46,7 +46,7 @@ const handleAuthFailure = (req, res, next) => {
         req.flash('error', info.message);
         return res.redirect('/login');
       } else if (req.accepts('json')) {
-        return res.status(401).json({ message: info.message });
+        return res.status(401).json({error:true, message: info.message });
       }
     }
     req.logIn(user, (err) => {

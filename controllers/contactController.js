@@ -19,14 +19,14 @@ module.exports.createNewContact = async (req, res) => {
             delete req.session.returnTo;
             res.redirect(redirectUrl);
         } else if (req.accepts('json')) {
-            res.json({ message: 'Kontak Berhasil Disimpan',  Kontak: contact.toJSON});
+            res.json({ error:false, message: 'Kontak Berhasil Disimpan',  Kontak: contact.toJSON});
         }
     }catch(err){
         if (req.accepts('html')) {
             req.flash('error', err.message);
             res.redirect('/');
         } else if (req.accepts('json')) {
-            res.status(400).json({ message: err.message });
+            res.status(400).json({ error:true, message: err.message});
         }
     }
 }
@@ -36,9 +36,9 @@ module.exports.getAllContact = async (req, res) => {
     const contacts = await contactServices.getContacts(req.user.id);
     
     try{
-        res.json({ message: 'Berhasil Fetch Kontak',  contacts: contacts});
+        res.json({ error:false, message: 'Berhasil Fetch Kontak',  contacts: contacts});
     }catch(err){
-        res.status(400).json({message: err.message})
+        res.status(400).json({error:true, message: err.message})
     }
 }
 
@@ -53,14 +53,14 @@ module.exports.deleteContactById = async (req, res) => {
             req.flash('success', 'Berhasil Menghapus Kontak')
             res.redirect('/');
         }else if(req.accepts('json')){
-            res.json({message: 'Kontak berhasil dihapus'})
+            res.json({error:false, message: 'Kontak berhasil dihapus'})
         }
     }catch(err){
         if(req.accepts('html')){
             req.flash('error', err.message)
             res.redirect('/');
         }else if(req.accepts('json')){
-            res.status(400).json({message: err.message})
+            res.status(400).json({error:true, message: err.message})
         }
     }
 }
@@ -80,7 +80,7 @@ module.exports.editKontak = async (req, res) => {
         existingContact = await Contact.findById(kontakId);
         
         if(!existingContact){
-            return res.status(404).send('Kontak not found');
+            return res.status(404).json({error:true, message: 'Kontak not found'});
         }
 
         existingContact.firstName = kontak.firstName;
@@ -94,7 +94,7 @@ module.exports.editKontak = async (req, res) => {
             req.flash('success', 'Berhasil Mengubah Kontak');
             res.redirect('/')
         }else if(req.accepts('json')){
-            res.json({message: 'Kontak Berhasil diubah'});
+            res.json({error:false, message: 'Kontak Berhasil diubah'});
         }
     }catch(err){
         // console.log(err);
@@ -102,7 +102,7 @@ module.exports.editKontak = async (req, res) => {
             req.flash('error', err.message)
             res.redirect('/');
         }else if(req.accepts('json')){
-            res.status(400).json({message: err.message})
+            res.status(400).json({error:true, message: err.message})
         }
     }
 

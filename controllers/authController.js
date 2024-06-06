@@ -26,7 +26,7 @@ module.exports.registerUser = async (req, res) => {
                 req.flash('success', 'Successfully Registered!');
                 res.redirect('/');
             } else if (req.accepts('json')) {
-                res.json({ message: 'Successfully Registered!', token });
+                res.json({error:false, message: 'Successfully Registered!', token });
             }
         })
     }catch(err){
@@ -34,7 +34,7 @@ module.exports.registerUser = async (req, res) => {
             req.flash('error', err.message);
             res.redirect('/register');
         } else if (req.accepts('json')) {
-            res.status(400).json({ error: err.message });
+            res.status(400).json({error: true, message: err.message});
         }
     }
 }
@@ -48,7 +48,7 @@ module.exports.loginUser = async (req, res) => {
       delete req.session.returnTo;
       res.redirect(redirectUrl);
     } else if (req.accepts('json')) {
-      res.json({ message: 'Welcome back!', token });
+      res.json({error: false, message: 'Welcome back!', token });
     }
 }
 
@@ -61,7 +61,7 @@ module.exports.logoutUser = (req, res) => {
           req.flash('success', 'Goodbye');
           res.redirect('/login');
         } else if (req.accepts('json')) {
-          res.json({ message: 'Logged out successfully' });
+          res.json({error:false, message: 'Logged out successfully' });
         } else {
           res.status(400).send('Unsupported request type');
         }
