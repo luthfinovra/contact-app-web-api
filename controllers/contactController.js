@@ -3,43 +3,65 @@ const Contact = require('../models/contact');
 const contactServices = require('../utils/services')
 
 module.exports.createNewContact = async (req, res) => {
-    const contact = new Contact(req.body.kontak);
-    console.log(req.body);
-    await contact.save();
+    try{
+        const contact = new Contact(req.body.kontak);
+        // console.log(req.body);
+        await contact.save();
 
-    console.log(req.user)
-    const user = await User.findById(req.user.id);
-    user.contact.push(contact);
-    await user.save();
+        // console.log(req.user)
+        const user = await User.findById(req.user.id);
+        user.contact.push(contact);
+        await user.save();
 
-    if (req.accepts('html')) {
-        req.flash('success', 'Kontak Berhasil Ditambahkan');
-        const redirectUrl = req.session.returnTo || '/';
-        delete req.session.returnTo;
-        res.redirect(redirectUrl);
-    } else if (req.accepts('json')) {
-        res.json({ message: 'Kontak Berhasil Disimpan',  Kontak: contact.toJSON});
+        if (req.accepts('html')) {
+            req.flash('success', 'Kontak Berhasil Ditambahkan');
+            const redirectUrl = req.session.returnTo || '/';
+            delete req.session.returnTo;
+            res.redirect(redirectUrl);
+        } else if (req.accepts('json')) {
+            res.json({ message: 'Kontak Berhasil Disimpan',  Kontak: contact.toJSON});
+        }
+    }catch(err){
+        if (req.accepts('html')) {
+            req.flash('error', err.message);
+            res.redirect('/');
+        } else if (req.accepts('json')) {
+            res.status(400).json({ message: err.message });
+        }
     }
 }
 
 module.exports.getAllContact = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     const contacts = await contactServices.getContacts(req.user.id);
     
-    res.json({ message: 'Berhasil Fetch Kontak',  contacts: contacts});
+    try{
+        res.json({ message: 'Berhasil Fetch Kontak',  contacts: contacts});
+    }catch(err){
+        res.status(400).json({message: err.message})
+    }
 }
 
 module.exports.deleteContactById = async (req, res) => {
-    const kontakId = req.params.id;
-    const userId = req.user.id;
-    await User.findByIdAndUpdate(userId, {$pull: {contact: kontakId}});
-    await Contact.findByIdAndDelete(kontakId);
+    try{
+        const kontakId = req.params.id;
+        const userId = req.user.id;
+        await User.findByIdAndUpdate(userId, {$pull: {contact: kontakId}});
+        await Contact.findByIdAndDelete(kontakId);
 
-    if(req.accepts('html')){
-        req.flash('success', 'Berhasil Menghapus Kontak')
-        res.redirect('/');
-    }else if(req.accepts('json')){
-        res.json({message: 'Kontak berhasil dihapus'})
+        if(req.accepts('html')){
+            req.flash('success', 'Berhasil Menghapus Kontak')
+            res.redirect('/');
+        }else if(req.accepts('json')){
+            res.json({message: 'Kontak berhasil dihapus'})
+        }
+    }catch(err){
+        if(req.accepts('html')){
+            req.flash('error', err.message)
+            res.redirect('/');
+        }else if(req.accepts('json')){
+            res.status(400).json({message: err.message})
+        }
     }
 }
 
@@ -75,8 +97,13 @@ module.exports.editKontak = async (req, res) => {
             res.json({message: 'Kontak Berhasil diubah'});
         }
     }catch(err){
-        console.log(err);
-        res.status(500).send('Internal Server Error');
+        // console.log(err);
+        if(req.accepts('html')){
+            req.flash('error', err.message)
+            res.redirect('/');
+        }else if(req.accepts('json')){
+            res.status(400).json({message: err.message})
+        }
     }
 
 }
